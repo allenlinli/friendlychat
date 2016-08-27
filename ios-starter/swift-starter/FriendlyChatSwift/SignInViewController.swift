@@ -19,7 +19,7 @@ import UIKit
 import Firebase
 
 @objc(SignInViewController)
-class SignInViewController: UIViewController {
+class SignInViewController: UIViewController, UITextFieldDelegate {
 
   @IBOutlet weak var emailField: UITextField!
   @IBOutlet weak var passwordField: UITextField!
@@ -29,9 +29,12 @@ class SignInViewController: UIViewController {
         if let user = FIRAuth.auth()?.currentUser {
             self.signedIn(user: user)
         }
+        
+        emailField.delegate = self
+        passwordField.delegate = self
     }
     
-    @IBAction func didTapSignIn(sender: AnyObject) {
+    @IBAction func didTapSignIn(_ sender: AnyObject) {
         // Sign In with credentials.
         let email = emailField.text
         let password = passwordField.text
@@ -43,7 +46,8 @@ class SignInViewController: UIViewController {
             self.signedIn(user: user!)
         }
     }
-    @IBAction func didTapSignUp(sender: AnyObject) {
+    
+    @IBAction func didTapSignup(_ sender: AnyObject) {
         let email = emailField.text
         let password = passwordField.text
         FIRAuth.auth()?.createUser(withEmail: email!, password: password!) { (user, error) in
@@ -67,7 +71,7 @@ class SignInViewController: UIViewController {
         }
     }
     
-    @IBAction func didRequestPasswordReset(sender: AnyObject) {
+    @IBAction func didRequestPasswordReset(_ sender: AnyObject) {
         let prompt = UIAlertController.init(title: nil, message: "Email:", preferredStyle: UIAlertControllerStyle.alert)
         let okAction = UIAlertAction.init(title: "OK", style: UIAlertActionStyle.default) { (action) in
             let userInput = prompt.textFields![0].text
@@ -96,4 +100,8 @@ class SignInViewController: UIViewController {
         performSegue(withIdentifier: Constants.Segues.SignInToFp, sender: nil)
     }
 
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
 }
