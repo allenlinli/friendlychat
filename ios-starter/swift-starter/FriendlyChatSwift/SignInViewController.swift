@@ -24,30 +24,76 @@ class SignInViewController: UIViewController {
   @IBOutlet weak var emailField: UITextField!
   @IBOutlet weak var passwordField: UITextField!
 
-  override func viewDidAppear(_ animated: Bool) {
-  }
-
-  @IBAction func didTapSignIn(_ sender: AnyObject) {
-    signedIn(nil)
-  }
-
-  @IBAction func didTapSignUp(_ sender: AnyObject) {
-    setDisplayName(nil)
-  }
-
-  func setDisplayName(_ user: FIRUser?) {
-    signedIn(nil)
-  }
-
-  @IBAction func didRequestPasswordReset(_ sender: AnyObject) {
-  }
-
-  func signedIn(_ user: FIRUser?) {
-    MeasurementHelper.sendLoginEvent()
-
-    AppState.sharedInstance.signedIn = true
-    NotificationCenter.default.post(name: Notification.Name(rawValue: Constants.NotificationKeys.SignedIn), object: nil, userInfo: nil)
-    performSegue(withIdentifier: Constants.Segues.SignInToFp, sender: nil)
-  }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if let user = FIRAuth.auth()?.currentUser {
+            self.signedIn(user: user)
+        }
+    }
+    
+    @IBAction func didTapSignIn(sender: AnyObject) {
+        // Sign In with credentials.
+        let email = emailField.text
+        let password = passwordField.text
+        FIRAuth.auth()?.signIn(withEmail: email!, password: password!) { (user, error) in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            self.signedIn(user: user!)
+        }
+    }
+    @IBAction func didTapSignUp(sender: AnyObject) {
+        let email = emailField.text
+        let password = passwordField.text
+        FIRAuth.auth()?.createUser(withEmail: email!, password: password!) { (user, error) in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            self.setDisplayName(user: user!)
+        }
+    }
+    
+    func setDisplayName(user: FIRUser) {
+        let changeRequest = user.profileChangeRequest()
+        changeRequest.displayName = user.email!.characters.split(separator: "@").map(String.init).first
+        changeRequest.commitChanges(){ (error) in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            self.signedIn(user: FIRAuth.auth()?.currentUser)
+        }
+    }
+    
+    @IBAction func didRequestPasswordReset(sender: AnyObject) {
+        let prompt = UIAlertController.init(title: nil, message: "Email:", preferredStyle: UIAlertControllerStyle.alert)
+        let okAction = UIAlertAction.init(title: "OK", style: UIAlertActionStyle.default) { (action) in
+            let userInput = prompt.textFields![0].text
+            if (userInput!.isEmpty) {
+                return
+            }
+            FIRAuth.auth()?.sendPasswordReset(withEmail: userInput!) { (error) in
+                if let error = error {
+                    print(error.localizedDescription)
+                    return
+                }
+            }
+        }
+        prompt.addTextField(configurationHandler: nil)
+        prompt.addAction(okAction)
+        present(prompt, animated: true, completion: nil);
+    }
+    
+    func signedIn(user: FIRUser?) {
+        MeasurementHelper.sendLoginEvent()
+        
+        AppState.sharedInstance.displayName = user?.displayName ?? user?.email
+        AppState.sharedInstance.photoUrl = user?.photoURL
+        AppState.sharedInstance.signedIn = true
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: Constants.NotificationKeys.SignedIn), object: nil, userInfo: nil)
+        performSegue(withIdentifier: Constants.Segues.SignInToFp, sender: nil)
+    }
 
 }

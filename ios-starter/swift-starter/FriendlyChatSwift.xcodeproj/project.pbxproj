@@ -18,6 +18,7 @@
 		5F5A537E1ADE67D500F81DF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5A537D1ADE67D500F81DF0 /* AppDelegate.swift */; };
 		5F5A53801ADE67D500F81DF0 /* FCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5A537F1ADE67D500F81DF0 /* FCViewController.swift */; };
 		6B098927B1191D2B231A0B4E /* Pods_FriendlyChatSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3B86C3B7D612EAC111651786 /* Pods_FriendlyChatSwift.framework */; };
+		E96A8E4F1D710B0100545C09 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E96A8E4E1D710B0100545C09 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		5F5A537D1ADE67D500F81DF0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5F5A537F1ADE67D500F81DF0 /* FCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCViewController.swift; sourceTree = "<group>"; };
 		B5B1F0D1FFF1959AFA3FC3A1 /* Pods-FriendlyChatSwift.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FriendlyChatSwift.debug.xcconfig"; path = "Pods/Target Support Files/Pods-FriendlyChatSwift/Pods-FriendlyChatSwift.debug.xcconfig"; sourceTree = "<group>"; };
+		E96A8E4E1D710B0100545C09 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +57,7 @@
 			isa = PBXGroup;
 			children = (
 				2C85627D1AFAB65F00F0B24B /* Icon@2x.png */,
+				E96A8E4E1D710B0100545C09 /* GoogleService-Info.plist */,
 				2C85627E1AFAB65F00F0B24B /* Images.xcassets */,
 				2C85627F1AFAB65F00F0B24B /* LaunchScreen.xib */,
 			);
@@ -191,6 +194,7 @@
 			files = (
 				2C8562871AFAB65F00F0B24B /* LaunchScreen.xib in Resources */,
 				107960731C612531003DB6CC /* Main.storyboard in Resources */,
+				E96A8E4F1D710B0100545C09 /* GoogleService-Info.plist in Resources */,
 				2C8562851AFAB65F00F0B24B /* Images.xcassets in Resources */,
 				2C8562831AFAB65F00F0B24B /* Icon@2x.png in Resources */,
 			);
